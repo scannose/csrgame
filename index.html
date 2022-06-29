@@ -5,7 +5,9 @@
     <script>
       let csr = {
         iq: 0,
+        knowledge: 0,
         books: 0,
+        notes: 0,
         school: false
       };
       
@@ -22,8 +24,11 @@
       
       const update_ui = () => {
         ezdom("iq", "iq: " + stupidround(csr.iq));
-        ezdom("books", "books: " + stupidround(csr.books));
+        ezdom("knowledge", "knowledge: " + stupidround(csr.knowledge));
+        ezdom("books", "books: " + csr.books);
+        ezdom("notes", "notes: " + csr.notes);
         ezdom("books", csr.iq < 10 * 1.15 ** csr.books, "disabled");
+        ezdom("notes", csr.iq < 50 * 1.15 ** csr.notes, "disabled");
         ezdom("unlock_school", csr.iq < 1000, "disabled");
         ezdom("unlock_school", csr.school, "hidden");
         ezdom("school", !csr.school, "hidden");
@@ -32,6 +37,12 @@
       const buy_book = () => {
         csr.iq -= 10 * 1.15 ** csr.books;
         csr.books++;
+        update_ui();
+      };
+      
+      const buy_note = () => {
+        csr.iq -= 50 * 1.15 ** csr.notes;
+        csr.notes++;
         update_ui();
       };
       
@@ -44,6 +55,7 @@
       const update = () => {
         setTimeout(update, 100);
         csr.iq += 0.1 + csr.books * 0.03;
+        csr.knowledge += csr.notes * 0.02;
         update_ui();
       };
       setTimeout(update, 100);
@@ -52,12 +64,15 @@
   <body>
     <div id = "home">
       <p id = "iq">iq: 0</p>
-      <button id = "books" onclick = "buy_book()">books: 0</button>
+      <button id = "books" onclick = "buy_book()" disabled = "true">books: 0</button>
       <p>Reading a book gives you 0.3 iq/s. The first book requires 10 iq to understand and each book is 1.15x harder to understand than the last one.</p>
       <button id = "unlock_school" onclick = "unlock_school()">start going to school (1000 iq)</button>
     </div>
     <div id = "school" hidden = "true">
-      <p>tbd</p>
+      <p id = "knowledge">knowledge: 0</p>
+      <button id = "notes" onclick = "buy_note()" disabled = "true">notes: 0</button>
+      <p>Taking down notes give you knowledge (0.2/s each). You need 50 iq to write one and the iq cost increases by x1.15 each time you write one.</p>
+      <button id = "hw">finish your homework (500 knowledge)</button>
     </div>
     <div id = "achievements">
       <p>tbd</p>
