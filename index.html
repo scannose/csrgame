@@ -35,6 +35,7 @@
         ezdom("unlock_school", csr.iq < 1000, "disabled");
         ezdom("unlock_school", csr.school, "hidden");
         ezdom("school", !csr.school, "hidden");
+        ezdom("hw", csr.knowledge < 500, "disabled");
       };
       
       const buy_book = () => {
@@ -76,14 +77,14 @@
       <button id = "books" onclick = "buy_book()" disabled = "true">books: 0</button>
       <p>Reading a book gives you 0.3 iq/s. The first book requires 10 iq to understand and each book is 1.15x harder to understand than the last one.</p>
       <button id = "strats" onclick = "buy_strat()" disabled = "true">strats: 0</button>
-      <p>Think of a stratergy makes you understand books 20% deeper! It takes 100 iq to think of the first strat and each one after the first one is 1.25x harder to think of.</p>
+      <p>Thinking of a stratergy makes you understand books 20% deeper! It takes 100 iq to think of the first strat and each one after the first one is 1.25x harder to think of.</p>
       <button id = "unlock_school" onclick = "unlock_school()">start going to school (1000 iq)</button>
     </div>
     <div id = "school" hidden = "true">
       <p id = "knowledge">knowledge: 0</p>
       <button id = "notes" onclick = "buy_note()" disabled = "true">notes: 0</button>
       <p>Taking down notes give you knowledge (0.2/s each). You need 50 iq to write the first one and the iq cost increases by x1.15 each time you write another one.</p>
-      <button id = "hw">finish your homework (500 knowledge)</button>
+      <button id = "hw" onclick = "alert('tbd')" disabled = "true">finish your homework (500 knowledge)</button>
     </div>
     <div id = "achievements">
       <p>tbd</p>
