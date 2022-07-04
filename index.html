@@ -9,7 +9,8 @@
         books: 0,
         strats: 0,
         notes: 0,
-        school: false
+        school: false,
+        week: 0
       };
       
       const stupidround = value => {
@@ -31,11 +32,12 @@
         ezdom("notes", "notes: " + csr.notes +  + " (" + stupidround(50 * 1.15 ** csr.notes) + " iq)");
         ezdom("books", csr.iq < 10 * 1.15 ** csr.books, "disabled");
         ezdom("strats", csr.iq < 100 * 1.25 ** csr.strats, "disabled");
-        ezdom("notes", csr.iq < 50 * 1.15 ** csr.notes, "disabled");
+        ezdom("notes", csr.iq < 50 * (1.15 - csr.week * 0.03) ** csr.notes, "disabled");
         ezdom("unlock_school", csr.iq < 1000, "disabled");
         ezdom("unlock_school", csr.school, "hidden");
         ezdom("school", !csr.school, "hidden");
-        ezdom("hw", csr.knowledge < 500, "disabled");
+        ezdom("hw", "finish your homework (" + 500 * 3 ** csr.week + " knowledge)");
+        ezdom("hw", csr.knowledge < 500 * 3 ** csr.week, "disabled");
       };
       
       const buy_book = () => {
@@ -51,7 +53,7 @@
       };
       
       const buy_note = () => {
-        csr.iq -= 50 * 1.15 ** csr.notes;
+        csr.iq -= 50 * (1.15 - csr.week * 0.03) ** csr.notes;
         csr.notes++;
         update_ui();
       };
@@ -62,10 +64,17 @@
         update_ui();
       };
       
+      const finish_hw = () => {
+        csr.knowledge = 0;
+        csr.notes = 0;
+        csr.week++;
+        update_ui();
+      };
+      
       const update = () => {
         setTimeout(update, 100);
-        csr.iq += 0.1 + csr.books * 0.03 * (1 + csr.strats * 0.2);
-        csr.knowledge += csr.notes * 0.02;
+        csr.iq += (0.1 + csr.books * 0.03 * (1 + csr.strats * 0.2)) * (2 ** csr.week);
+        csr.knowledge += csr.notes * 0.02 * (2 ** csr.week);
         update_ui();
       };
       setTimeout(update, 100);
@@ -84,7 +93,9 @@
       <p id = "knowledge">knowledge: 0</p>
       <button id = "notes" onclick = "buy_note()" disabled = "true">notes: 0 (50 iq)</button>
       <p>Taking down notes give you knowledge (0.2/s each). You need 50 iq to write the first one and the iq cost increases by x1.15 each time you write another one.</p>
-      <button id = "hw" onclick = "alert('tbd')" disabled = "true">finish your homework (500 knowledge)</button>
+      <button id = "hw" onclick = "finish_hw()" disabled = "true">finish your homework (500 knowledge)</button>
+      <p>Finishing your homework and turning it in will wipe out everything you got in school and make you progress into the next week.<br>
+        2 lazy to write hw effects for now dig through the code to find out lol btw it will be changed in the next update</p>
     </div>
     <div id = "achievements">
       <p>tbd</p>
