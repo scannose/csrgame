@@ -28,8 +28,8 @@
         ezdom("iq", "iq: " + stupidround(csr.iq));
         ezdom("knowledge", "knowledge: " + stupidround(csr.knowledge));
         ezdom("books", "books: " + csr.books + " (" + stupidround(10 * 1.15 ** csr.books) + " iq)");
-        ezdom("strats", "strats: " + csr.strats + " (" + stupidround(100 * 1.15 ** csr.strats) + " iq)");
-        ezdom("notes", "notes: " + csr.notes +  + " (" + stupidround(50 * 1.15 ** csr.notes) + " iq)");
+        ezdom("strats", "strats: " + csr.strats + " (" + stupidround(100 * 1.25 ** csr.strats) + " iq)");
+        ezdom("notes", "notes: " + csr.notes + " (" + stupidround(50 * (1.15 - csr.week * 0.03) ** csr.notes) + " iq)");
         ezdom("books", csr.iq < 10 * 1.15 ** csr.books, "disabled");
         ezdom("strats", csr.iq < 100 * 1.25 ** csr.strats, "disabled");
         ezdom("notes", csr.iq < 50 * (1.15 - csr.week * 0.03) ** csr.notes, "disabled");
